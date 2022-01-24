@@ -138,41 +138,39 @@ function createSquare(x, y, size, color) {
 
 function createRandomCircles(count) {
     for (i = 0; i < count; i++) {
-        console.log('Number: ' + i);
-        setTimeout(function() {
-            createCircle()
-        }, 10);
+        console.log('Number: ' + i)
+        createCircle()
     }
-    createListItem()
+    if (i >= count) {
+        createListItem()
+    }
 }
 
 function createRandomSquares(count) {
     for (i = 0; i < count; i++) {
-        console.log('Number: ' + i);
-        setTimeout(function() {
-            createSquare()
-        }, 10);
+        console.log('Number: ' + i)
+        createSquare()
     }
-    createListItem()
+    if (i >= count) {
+        createListItem()
+    }
 }
 
 function createRandomSpread(count) {
     for (i = 0; i < count; i++) {
         var r = (i % 2)
         console.log('Number: ' + r)
-        setTimeout(function() {
-            createWhat(r)
-        },
-            10);
+        createWhat(r)
     }
-    createListItem()
+    if (i >= count) {
+        createListItem()
+    }
 }
 function createWhat(i) {
     if (i === 0) {
         console.log('Even: ' + r);
         createCircle();
-    }
-    else if (i === 1) {
+    } else if (i === 1) {
         console.log('Odd: ' + r);
         createSquare();
     }
