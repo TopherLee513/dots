@@ -98,19 +98,19 @@ function createListItem(src) {
     var li = document.createElement("li");
     var link = document.createElement('a');
     var img = document.createElement("img");
-    var span = document.createElement("span");
+    var div = document.createElement("div");
 
     link.href = CanvasImageSrc().replace("image/png", "image/octet-stream");
     link.id = 'imageLink';
     link.target = '_blank';
-    span.innerText = 'Download';
+    div.innerText = 'Download';
     link.download = "image.png";
     img.src = CanvasImageSrc();
     img.id = 'imagePreview';
 
     li.appendChild(link);
     link.appendChild(img);
-    link.appendChild(span);
+    link.appendChild(div);
     imageList.appendChild(li);
 }
 
@@ -137,6 +137,11 @@ function createSquare(x, y, size, color) {
 }
 
 function createRandomCircles(count) {
+ctx.fillRect(0,
+        0,
+        canvas.width,
+        canvas.height,
+        getRandomRGB());
     for (i = 0; i < count; i++) {
         console.log('Number: ' + i)
         createCircle()
@@ -147,6 +152,11 @@ function createRandomCircles(count) {
 }
 
 function createRandomSquares(count) {
+ctx.fillRect(0,
+        0,
+        canvas.width,
+        canvas.height,
+        getRandomRGB());
     for (i = 0; i < count; i++) {
         console.log('Number: ' + i)
         createSquare()
@@ -157,6 +167,11 @@ function createRandomSquares(count) {
 }
 
 function createRandomSpread(count) {
+ctx.fillRect(0,
+        0,
+        canvas.width,
+        canvas.height,
+        getRandomRGB());
     for (i = 0; i < count; i++) {
         var r = (i % 2)
         console.log('Number: ' + r)
@@ -168,11 +183,11 @@ function createRandomSpread(count) {
 }
 function createWhat(i) {
     if (i === 0) {
-        console.log('Even: ' + r);
-        createCircle();
+        console.log('Even: ' + r)
+        createCircle()
     } else if (i === 1) {
-        console.log('Odd: ' + r);
-        createSquare();
+        console.log('Odd: ' + r)
+        createSquare()
     }
 }
 function createCircleLines(size) {
@@ -180,6 +195,8 @@ function createCircleLines(size) {
     var y = size;
     var countX = canvas.width / size * 2;
     var countY = canvas.height / size * 2;
+    var total = countX + countY;
+    var count = 0;
     ctx.fillRect(0,
         0,
         canvas.width,
@@ -187,14 +204,19 @@ function createCircleLines(size) {
         getRandomRGB());
     console.log('Count X: ' + countX);
     console.log('Count Y: ' + countY);
+    
     for (row = 1; row <= countY; row++) {
         for (column = 1; column <= countX; column++) {
             createCircle(x, y, size);
             x = x + size * 2;
+            count++;
         }
         x = size;
         countX = canvas.width / size * 2;
         y = y + size * 2;
+    }
+    if (count >= total) {
+        createListItem()
     }
 }
 

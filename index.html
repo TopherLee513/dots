@@ -13,6 +13,9 @@
     <script defer src="dots.js"></script>
 </head>
 <body onload="Start()">
+    <header>
+        <h1>Dots</h1>
+    </header>
     <canvas id="canvas">
 
     </canvas>
@@ -20,7 +23,9 @@
         <div id="buttons">
             <button id="btnCreateDots" class="btn" onclick="createRandomCircles(9999)">Create Dots</button>
             <button id="btnCreateSquares" class="btn" onclick="createRandomSquares(9999)">Create Squares</button>
+            <!--
             <button id="btnCreateBoth" class="btn" onclick="createRandomSpread(9999)">Create Both</button>
+            -->
             <button id="btnCreateLines" class="btn" onclick="createCircleLines(8)">Create Rows</button>
         </div>
         <form id="imageForm" action="FormSubmit">
