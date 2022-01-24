@@ -114,7 +114,7 @@ function createListItem(src) {
     imageList.appendChild(li);
 }
 
-function createCircle(x, y, radius, color) {
+function createDot(x, y, radius, color) {
     var x = x || GetRandomInt(canvas.width); // Random X
     var y = y || GetRandomInt(canvas.height); // Random Y
     var radius = radius || GetRandomInt(20);
@@ -126,90 +126,93 @@ function createCircle(x, y, radius, color) {
     ctx.fill();
 }
 
-function createSquare(x, y, size, color) {
+function createBlock(x, y, size, color) {
     var x = x || GetRandomInt(canvas.width); // Random X
     var y = y || GetRandomInt(canvas.height); // Random Y
-    var size = size * 2 || GetRandomInt(20) * 2;
+    var size = size || GetRandomInt(20);
     var color = color || getRandomRGB();
 
     ctx.fillStyle = color;
     ctx.fillRect(x, y, size, size, color);
 }
 
-function createRandomCircles(count) {
-ctx.fillRect(0,
-        0,
-        canvas.width,
-        canvas.height,
-        getRandomRGB());
+function createRandomDots(count) {
+    createBackground()
     for (i = 0; i < count; i++) {
-        console.log('Number: ' + i)
-        createCircle()
+        //console.log('Number: ' + i)
+        createDot()
     }
     if (i >= count) {
         createListItem()
     }
 }
 
-function createRandomSquares(count) {
-ctx.fillRect(0,
-        0,
-        canvas.width,
-        canvas.height,
-        getRandomRGB());
+function createRandomBlocks(count) {
+    createBackground()
     for (i = 0; i < count; i++) {
-        console.log('Number: ' + i)
-        createSquare()
+        //console.log('Number: ' + i)
+        createBlock()
     }
     if (i >= count) {
         createListItem()
     }
 }
 
-function createRandomSpread(count) {
-ctx.fillRect(0,
-        0,
-        canvas.width,
-        canvas.height,
-        getRandomRGB());
+function createRandomBoth(count) {
+    createBackground()
     for (i = 0; i < count; i++) {
-        var r = (i % 2)
-        console.log('Number: ' + r)
-        createWhat(r)
+        createWhat(i)
     }
     if (i >= count) {
         createListItem()
     }
 }
 
-function createWhat(r) {
+function createWhat(i) {
+    var r = (i % 2)
+    console.log('Number: ' + r)
     if (r === 0) {
-        console.log('Even: ' + r)
-        createCircle()
+        //console.log('Even: ' + r)
+        createDot()
     }
     if (r === 1) {
-        console.log('Odd: ' + r)
-        createSquare()
+        //console.log('Odd: ' + r)
+        createBlock()
     }
 }
-function createCircleLines(size) {
+
+function createBoth(i, x, y, size) {
+    var r = (i % 2)
+    console.log('Number: ' + r)
+    if (r === 0) {
+        //console.log('Even: ' + r)
+        var size2 = size / 2
+        var x2 = x + size / 2
+        var y2 = y + size / 2
+        createDot(x2, y2, size2)
+    }
+    if (r === 1) {
+        //console.log('Odd: ' + r)
+        createBlock(x, y, size)
+    }
+}
+
+
+function createRowsDots(size) {
     var x = size;
     var y = size;
     var countX = canvas.width / size * 2;
     var countY = canvas.height / size * 2;
     var total = countX + countY;
     var count = 0;
-    ctx.fillRect(0,
-        0,
-        canvas.width,
-        canvas.height,
-        getRandomRGB());
+    createBackground()
     console.log('Count X: ' + countX);
     console.log('Count Y: ' + countY);
-    
-    for (row = 1; row <= countY; row++) {
-        for (column = 1; column <= countX; column++) {
-            createCircle(x, y, size)
+    console.log('Total: ' + total);
+    for (row = 0; row <= countY; row++) {
+        for (column = 0; column <= countX; column++) {
+            createDot(x, y, size)
+
             x = x + size * 2
             count++
         }
@@ -222,6 +225,66 @@ function createCircleLines(size) {
     }
 }
 
+function createRowsBlocks(size) {
+    var x = 0;
+    var y = 0;
+    var countX = canvas.width / size;
+    var countY = canvas.height / size;
+    var total = countX + countY;
+    var count = 0;
+    createBackground()
+    console.log('Count X: ' + countX);
+    console.log('Count Y: ' + countY);
+    console.log('Total: ' + total);
+    for (row = 0; row <= countY; row++) {
+        for (column = 0; column <= countX; column++) {
+            createBlock(x, y, size)
+            x = x + size
+            count++
+        }
+        x = 0
+        countX = canvas.width / size
+        y = y + size
+    }
+    if (count >= total) {
+        createListItem()
+    }
+}
+
+function createRowsBoth(size) {
+    var x = 0;
+    var y = 0;
+    var countX = canvas.width / size;
+    var countY = canvas.height / size;
+    var total = countX + countY;
+    var count = 0;
+    createBackground()
+    console.log('Count X: ' + countX);
+    console.log('Count Y: ' + countY);
+    console.log('Total: ' + total);
+    for (row = 0; row <= countY; row++) {
+        for (column = 0; column <= countX; column++) {
+            createBoth(count, x, y, size)
+
+            x = x + size
+            count++
+        }
+        x = size
+        countX = canvas.width / size
+        y = y + size
+    }
+    if (count >= total) {
+        createListItem()
+    }
+}
+
+function createBackground() {
+    ctx.fillRect(0,
+        0,
+        canvas.width,
+        canvas.height,
+        getRandomRGB());
+}
 function CanvasImageSrc() {
     var dataURI = canvas.toDataURL();
     imageDataURI = dataURI;
@@ -246,6 +309,19 @@ function getRandomRGB() {
     return 'rgb(' + r + ',' + g + ',' + b + ')';
 }
 
+function createCollection(count) {
+    for (i = 0; i < count; i++) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        createRowsDots(4)
+    }
+}
+
+function readCollection() {
+    for (i = 0; i < images.length; i++) {
+        console.log(images[i]);
+    }
+}
+
 /** Start-it-up */
 function Start() {
     FormSelectOptions();
@@ -254,21 +330,6 @@ function Start() {
     //readCollection();
 }
 
-function createNewCollection(count) {
-    for (i = 0; i < count; i++) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        createRandomSpread(10000);
-        var png = canvas.toDataURL("image/png");
-        createImgLiElement(png);
-        images.push(png);
-    }
-}
-function readCollection() {
-    for (i = 0; i < images.length; i++) {
-
-        console.log(images[i]);
-    }
-}
 /** Utilities
 * From:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 */

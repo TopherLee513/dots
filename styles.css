@@ -1,3 +1,5 @@
+/* TopherLee
+*/
 * {
   margin: 0;
   padding: 0;
@@ -39,13 +41,13 @@ header h2 span {
   z-index: 1;
 }
 
-#container {
+.container {
   z-index: 2;
   min-height: 4rem;
   width: 100%;
   margin-top: 1rem;
 }
-#container #buttons {
+.container #buttons {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -54,27 +56,27 @@ header h2 span {
     max-width: 100%;
     padding: .25rem;
 }
-#container form {
+.container form {
     width: 100%;
     height: auto;
     display: none;
     flex-direction: column;
 }
 
-#container form input {
+.container form input {
     width: auto;
     height: 2rem;
 }
-#container form select {
+.container form select {
     width: auto;
     height: 2rem;
 }
 
-#container form select option.option-header {
+.container form select option.option-header {
     font-weight: bold;
 }
 
-#container form [type="submit"] {
+.container form [type="submit"] {
     width: auto;
     height: 2rem;
     margin-left: .25rem;
@@ -98,7 +100,7 @@ header h2 span {
 }
 #imageList li {
   height: 2rem;
-  width: 100%;
+  width: auto;
   margin-bottom: .25rem;
   list-style: none;
 }
