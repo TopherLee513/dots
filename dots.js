@@ -181,11 +181,13 @@ ctx.fillRect(0,
         createListItem()
     }
 }
+
 function createWhat(i) {
     if (i === 0) {
         console.log('Even: ' + r)
         createCircle()
-    } else if (i === 1) {
+    }
+    if (i === 1) {
         console.log('Odd: ' + r)
         createSquare()
     }
@@ -207,13 +209,13 @@ function createCircleLines(size) {
     
     for (row = 1; row <= countY; row++) {
         for (column = 1; column <= countX; column++) {
-            createCircle(x, y, size);
-            x = x + size * 2;
-            count++;
+            createCircle(x, y, size)
+            x = x + size * 2
+            count++
         }
-        x = size;
-        countX = canvas.width / size * 2;
-        y = y + size * 2;
+        x = size
+        countX = canvas.width / size * 2
+        y = y + size * 2
     }
     if (count >= total) {
         createListItem()
