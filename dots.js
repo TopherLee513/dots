@@ -182,12 +182,12 @@ ctx.fillRect(0,
     }
 }
 
-function createWhat(i) {
-    if (i === 0) {
+function createWhat(r) {
+    if (r === 0) {
         console.log('Even: ' + r)
         createCircle()
     }
-    if (i === 1) {
+    if (r === 1) {
         console.log('Odd: ' + r)
         createSquare()
     }
