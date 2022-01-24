@@ -1,0 +1,98 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+#canvas {
+  z-index: 1;
+}
+
+#container {
+  z-index: 2;
+  min-height: 4rem;
+  width: 100%;
+  margin-top: 1rem;
+  background-color: #66666666;
+}
+#container #buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 100%;
+}
+#container form {
+    width: 100%;
+    height: auto;
+    display: none;
+    flex-direction: column;
+}
+
+#container form input {
+    width: auto;
+    height: 2rem;
+}
+#container form select {
+    width: auto;
+    height: 2rem;
+}
+
+#container form select option.option-header {
+    font-weight: bold;
+}
+
+#container form [type="submit"] {
+    width: auto;
+    height: 2rem;
+    margin-left: .25rem;
+    margin-right: .25rem;
+    border: 1px solid black;
+    border-radius: 2rem;
+}
+
+.btn {
+    height: 1.6rem;
+    min-width: 5rem;
+    width: auto;
+    margin-bottom: .5rem;
+}
+
+#imageList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  bottom: 0;
+}
+#imageList li {
+  height: 2rem;
+  width: 100%;
+  margin-bottom: .25rem;
+  list-style: none;
+  background-color: red;
+}
+#imageList li a {
+  width: auto;
+  height: auto;
+  text-decoration: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  border: 1px solid black;
+  border-radius: 2rem;
+}
+#imageList li a img {
+  height: auto;
+  max-width: 2rem;
+  margin-left: 1.5rem;
+  margin-right: auto;
+}
+#imageList li a span {
+  height: auto;
+  max-width: 100%;
+  margin: 0;
+  margin-right: 2rem;
+  text-align: center;
+}
