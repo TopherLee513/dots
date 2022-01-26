@@ -1,34 +1,52 @@
-/** app.js
-* Quick App.js
-*/
+/** Dots.js */
 
 /** Setup */
-
-
-/* Imports
-const Particle = 'Particle.js';
-const Random = 'Random.js';
-*/
-/*
-module.exports.dots = () => {
-    return 'New Dots Instance.';
-};
-*/
+const canvasContainer = document.getElementById('canvasContainer');
+const canvasPlaceholder = document.getElementById('canvasPlaceholder');
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-const container = document.getElementById('container');
 const imageList = document.getElementById('imageList');
-//const buttons = document.getElementById('buttons');
-//const btnSaveImage = document.getElementById('btn-SaveImage');
-const select = document.getElementById('select');
-const types = ['Dots', 'Squares', 'Rows']
-//let imageLink = document.getElementById('imageLink');
-//let imagePreview = document.getElementById('imagePreview');
-let imageDataURI = '';
+
+const collectionForm = document.getElementById('collectionForm');
+const imageSizeXUI = document.getElementById('imageSizeXUI');
+const imageSizeYUI = document.getElementById('imageSizeYUI');
+
+const collectionNameUI = document.getElementById('collectionNameUI');
+const imageCountUI = document.getElementById('imageCountUI');
+const backgroundColorUI = document.getElementById('backgroundColorUI');
+
+const particleCountUI = document.getElementById('particleCountUI');
+const layoutSelectUI = document.getElementById('layoutSelectUI');
+const particleSelectUI = document.getElementById('particleSelectUI');
+
+const shapes = ['Dots', 'Squares', 'Both']
+const styles = ['Random', 'Rows']
+
+let particles = [];
+let particleIndex = 0;
+let particleCount = undefined;
+
+let images = [];
+let imageIndex = 0;
+let imageCount = 1;
+
+let imageId = 0;
+let imageDataURI = undefined;
+let imageName = undefined;
+
+let collection = [];
+let collectionName = undefined;
+let collectionCount = 1;
+
 //canvas.height = window.innerHeight;
 //canvas.width = window.innerWidth;
-canvas.height = 1024;
-canvas.width = 1024;
+
+let imageSizeX = 2048;
+let imageSizeY = 2048;
+
+canvas.width = imageSizeX;
+canvas.height = imageSizeY;
+
 
 const mouse = {
     x: undefined,
@@ -36,65 +54,126 @@ const mouse = {
 }
 
 class Particle {
-    constructor() {
-        this.x = mouse.x;
-        this.y = mouse.y;
-        this.radius = Math.random() * 5 + 1;
-        this.speedX = Math.random() * 3 - 1.5;
-        this.speedY = Math.random() * 3 - 1.5
-    }
-}
-
-class Circle {
-    constructor(x, y, radius, color) {
+    constructor(id, x, y, size, color) {
+        this.id = id;
         this.x = x;
         this.y = y;
-        this.radius = radius;
+        this.size = size;
         this.color = color;
     }
 }
 
-class ImageElement {
-    constructor(src, id) {
-        var li = document.createElement("li");
-        var img = document.createElement("img");
-        var btn = document.createElement("button");
-        btn.class = 'btn';
-        btn.id = 'btn-' + id;
-        btn.onclick = 'saveImage(' + src + ')';
-        img.src = src;
-        li.appendChild(img);
-        li.appendChild(btn);
-        imageList.appendChild(li);
+class Dot extends Particle {
+    constructor() {
+        super()
+    }
+    draw() {
+        this.radius = this.size / 2;
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
     }
 }
 
-function FormSelectOptions() {
-    for (i = 0; i < types.length; i++) {
-        var option = document.createElement('option');
-        option.innerText = types[i];
-        select.appendChild(option);
+class Block extends Particle {
+    constructor() {
+        super()
+    }
+    draw() {
+        ctx.fillStyle = this.color;
+        ctx.fillRect(this.x, this.y, this.size, this.size, this.color);
     }
 }
-function FormSubmit(name, count, type) {
-    //Dots
-    if (type === types[0]) {
-        createRandomCircles(count);
-    }
-    //Squares
-    if (type === types[1]) {
-        createRandomSquares(count);
-    }
-    //Rows
-    if (type === types[2]) {
-        createCircleLines();
-    }
-}
-const particles = [];
-const images = [];
-const navLinks = [];
 
-function createListItem(src) {
+class CanvasImage {
+    constructor(id, name, background, particles) {
+        this.id = id;
+        this.name = name;
+        this.background = background;
+        this.particles = particles;
+    }
+}
+
+function FormSubmit() {
+
+    imageSizeX = imageSizeXUI.value || 2048;
+    imageSizeY = imageSizeYUI.value || 2048;
+    /*
+  imageSizeXUI.value.onchange() {
+    imageSizeX =
+    checkImageSizeInput(imageSizeXUI.value)
+  }
+  imageSizeYUI.value.onchange() {
+    imageSizeY = checkImageSizeInput(imageSizeYUI.value)
+  }
+*/
+    imageCount = imageCountUI.value || 1;
+    collectionName = collectionNameUI.value || 'Dots';
+    backgroundColor = backgroundColorUI.value || 'black';
+    particleCount = particleCountUI.value || 9999;
+
+    let layoutSelect = layoutSelectUI.value || 'Rows';
+    let particleSelect = particleSelectUI.value || 'Dots';
+
+    console.log('Form: ' + collectionForm);
+    console.log('Name: ' + collectionName);
+    console.log('Image Count: ' + imageCount);
+    console.log('Particle Count: ' + particleCount);
+    console.log('Layout: ' + layoutSelect);
+    console.log('Particles: ' + particleSelect);
+
+    canvas.width = imageSizeX;
+    canvas.height = imageSizeY;
+    canvas.style.border = "none";
+
+    createCollection(layoutSelect, particleSelect, imageCount, particleCount, backgroundColor)
+    placeholder(false);
+}
+/** Validation Checks */
+function checkImageSizeInput(input) {
+    let msgBox = document.getElementById('imageSizeWarning')
+    var msg = '';
+    if (input <= 0) {
+        msg = "What're you doing? (256px - 4096px)"
+    }
+    if (input < 256) {
+        msg = "What're you doing? (256px - 4096px)"
+    }
+    if (input > 4096) {
+        msg = "What're you doing? (256px - 4096px)"
+    }
+    if (input > min && input < max) {
+        msgBox.style.color = 'green';
+        msg = getMsgSuccess()
+    }
+    msgBox.innerText = msg;
+}
+
+function getMsgSuccess() {
+    var msgs = ['Cool-beans',
+        'Looks-Good',
+        'Okay!',
+        'Yeah, Buddy']
+    return msgs[GetRandomInt(msgs.length)]
+}
+function getMsgFailure() {
+    var msgs = ['That is Wrong',
+        'No Good',
+        'Not Okay!',
+        'No, Dude']
+    return msgs[GetRandomInt(msgs.length)]
+}
+function buildImage(sizeX, sizeY, background, particles) {
+    var sizeX = sizeX;
+    var sizeY = sizeY;
+    var background = background;
+    var particles = particles;
+
+    var image = CanvasImageSrc();
+}
+function buildListItem() {
+    var imageCount = imageCount || 1;
     var li = document.createElement("li");
     var link = document.createElement('a');
     var img = document.createElement("img");
@@ -103,101 +182,114 @@ function createListItem(src) {
     link.href = CanvasImageSrc().replace("image/png", "image/octet-stream");
     link.id = 'imageLink';
     link.target = '_blank';
-    div.innerText = 'Download';
-    link.download = "image.png";
+    div.innerText = 'Download ' + boolCollection();
+    link.download = boolCollection() + ".png";
     img.src = CanvasImageSrc();
     img.id = 'imagePreview';
-
+    link.style.backgroundImage = "url(" + CanvasImageSrc() + ")";
     li.appendChild(link);
     link.appendChild(img);
     link.appendChild(div);
     imageList.appendChild(li);
 }
 
-function createDot(x, y, radius, color) {
-    var x = x || GetRandomInt(canvas.width); // Random X
-    var y = y || GetRandomInt(canvas.height); // Random Y
-    var radius = radius || GetRandomInt(20);
-    var color = color || getRandomRGB();
+function boolCollection() {
+    var s = collectionName
+    if (imageCount) {
+        if (imageCount > 0) {
+            s = collectionName + " " + collection.length + " of " + imageCount;
+        }
+    }
+    return s
+}
 
-    ctx.fillStyle = color;
+function drawDot(x, y, size, color) {
+    this.x = x || GetRandomInt(canvas.width); // Random X
+    this.y = y || GetRandomInt(canvas.height); // Random Y
+    this.size = size || GetRandomInt(20);
+    this.color = color || getRandomRGB();
+
+    ctx.fillStyle = this.color;
     ctx.beginPath();
-    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
     ctx.fill();
+    /*
+    var i = indexer(Particle);
+    var dot = new Dot(i, x, y, size, color);
+    console.log('Particle: Dot');
+    console.log('Index: ' + i);
+    console.log('Coords: ' + x + " x " + y);
+    console.log('Size: ' + size);
+    console.log('Color: ' + color);
+    dot.draw();
+    particles.push(dot);
+    */
+
+
 }
 
-function createBlock(x, y, size, color) {
-    var x = x || GetRandomInt(canvas.width); // Random X
-    var y = y || GetRandomInt(canvas.height); // Random Y
-    var size = size || GetRandomInt(20);
-    var color = color || getRandomRGB();
+function drawBlock(x, y, size, color) {
+    this.x = x || GetRandomInt(canvas.width); // Random X
+    this.y = y || GetRandomInt(canvas.height); // Random Y
+    this.size = size || GetRandomInt(20);
+    this.color = color || getRandomRGB();
 
-    ctx.fillStyle = color;
-    ctx.fillRect(x, y, size, size, color);
+    ctx.fillStyle = this.color;
+    ctx.fillRect(this.x, this.y, this.size, this.size, this.color);
+    /*
+    var i = indexer(Particle)
+    var block = new Block(i, x, y, size, color);
+    block.draw();
+    particles.push(block);
+    */
 }
-
-function createRandomDots(count) {
-    createBackground()
-    for (i = 0; i < count; i++) {
+/** Layout
+*  Random
+*/
+function createRandomDots(particleCount) {
+    particleCount = particleCount || GetRandomInt(1000)
+    console.log('Particles: ' + particleCount)
+    particles = []
+    for (i = 0; i < particleCount; i++) {
         //console.log('Number: ' + i)
-        createDot()
+        drawDot()
     }
-    if (i >= count) {
-        createListItem()
+    if (i >= particleCount) {
+        console.log('Particles Created:' + i)
+        buildListItem()
     }
 }
 
-function createRandomBlocks(count) {
-    createBackground()
-    for (i = 0; i < count; i++) {
+function createRandomBlocks(particleCount) {
+    particleCount = particleCount || GetRandomInt(1000)
+    particles = []
+    for (i = 0; i < particleCount; i++) {
         //console.log('Number: ' + i)
-        createBlock()
+        drawBlock()
     }
-    if (i >= count) {
-        createListItem()
+    if (i >= particleCount) {
+console.log('Particles Created:' + i)
+       
+        buildListItem()
     }
 }
 
-function createRandomBoth(count) {
-    createBackground()
-    for (i = 0; i < count; i++) {
+function createRandomBoth(particleCount) {
+    particleCount = particleCount || GetRandomInt(1000)
+    particles = []
+    for (i = 0; i < particleCount; i++) {
         createWhat(i)
     }
-    if (i >= count) {
-        createListItem()
+    if (i >= particleCount) {
+console.log('Particles Created:' + i)
+       
+        buildListItem()
     }
 }
 
-function createWhat(i) {
-    var r = (i % 2)
-    console.log('Number: ' + r)
-    if (r === 0) {
-        //console.log('Even: ' + r)
-        createDot()
-    }
-    if (r === 1) {
-        //console.log('Odd: ' + r)
-        createBlock()
-    }
-}
-
-function createBoth(i, x, y, size) {
-    var r = (i % 2)
-    console.log('Number: ' + r)
-    if (r === 0) {
-        //console.log('Even: ' + r)
-        var size2 = size / 2
-        var x2 = x + size / 2
-        var y2 = y + size / 2
-        createDot(x2, y2, size2)
-    }
-    if (r === 1) {
-        //console.log('Odd: ' + r)
-        createBlock(x, y, size)
-    }
-}
-
-
+/** Layout
+*   Rows
+*/
 function createRowsDots(size) {
     var x = size;
     var y = size;
@@ -205,13 +297,14 @@ function createRowsDots(size) {
     var countY = canvas.height / size * 2;
     var total = countX + countY;
     var count = 0;
+    particles = []
     createBackground()
     console.log('Count X: ' + countX);
     console.log('Count Y: ' + countY);
     console.log('Total: ' + total);
     for (row = 0; row <= countY; row++) {
         for (column = 0; column <= countX; column++) {
-            createDot(x, y, size)
+            drawDot(x, y, size)
 
             x = x + size * 2
             count++
@@ -221,7 +314,7 @@ function createRowsDots(size) {
         y = y + size * 2
     }
     if (count >= total) {
-        createListItem()
+        buildListItem()
     }
 }
 
@@ -238,7 +331,7 @@ function createRowsBlocks(size) {
     console.log('Total: ' + total);
     for (row = 0; row <= countY; row++) {
         for (column = 0; column <= countX; column++) {
-            createBlock(x, y, size)
+            drawBlock(x, y, size)
             x = x + size
             count++
         }
@@ -247,7 +340,7 @@ function createRowsBlocks(size) {
         y = y + size
     }
     if (count >= total) {
-        createListItem()
+        buildListItem()
     }
 }
 
@@ -265,7 +358,6 @@ function createRowsBoth(size) {
     for (row = 0; row <= countY; row++) {
         for (column = 0; column <= countX; column++) {
             createBoth(count, x, y, size)
-
             x = x + size
             count++
         }
@@ -274,16 +366,117 @@ function createRowsBoth(size) {
         y = y + size
     }
     if (count >= total) {
-        createListItem()
+        buildListItem()
     }
 }
 
-function createBackground() {
+function createWhat(i) {
+    var r = (i % 2)
+    //console.log('Number: ' + r)
+    if (r === 0) {
+        //console.log('Even: ' + r)
+        drawDot()
+    }
+    if (r === 1) {
+        //console.log('Odd: ' + r)
+        drawBlock()
+    }
+}
+
+function createBoth(i, x, y, size) {
+    var r = (i % 2)
+    //console.log('Number: ' + r)
+    if (r === 0) {
+        //console.log('Even: ' + r)
+        var size2 = size / 2
+        var x2 = x + size / 2
+        var y2 = y + size / 2
+        drawDot(x2, y2, size2)
+    }
+    if (r === 1) {
+        //console.log('Odd: ' + r)
+        drawBlock(x, y, size)
+    }
+}
+
+function createCollection(layoutSelect, particleSelect, imageCount, particleCount, backgroundColor) {
+    for (i = 0; i < imageCount; i++) {
+        createBackground(backgroundColor)
+        if (layoutSelect === 'Random' && particleSelect === 'Dots') {
+            createRandomDots(particleCount)
+        }
+        if (layoutSelect === 'Rows' && particleSelect === 'Dots') {
+
+            createRowsDots(8)
+        }
+        if (layoutSelect === 'Random' && particleSelect === 'Blocks') {
+
+            createRandomBlocks(particleCount);
+        }
+        if (layoutSelect === 'Rows' && particleSelect === 'Blocks') {
+
+            createRowsBlocks(8);
+        }
+        if (layoutSelect === 'Random' && particleSelect === 'Both') {
+
+            createRandomBoth(particleCount);
+        }
+        if (layoutSelect === 'Rows' && particleSelect === 'Both') {
+            createRowsBoth(8);
+
+        }
+        console.log('Image: ' + i)
+    }
+}
+function indexer(object) {
+    if (object) {
+        if (object == Particle) {
+            if (particles.length === 0) {
+                return 0
+            }
+            if (particles.length > 0) {
+                return particles.length
+            }
+        }
+        if (object == Image) {
+            if (collection.length === 0) {
+                return 0
+            }
+            if (collection.length > 0) {
+                return collection.length
+            }
+        }
+    }
+}
+function readCollection() {
+    for (i = 0; i < images.length; i++) {
+        console.log(images[i]);
+    }
+}
+
+/** Start-it-up */
+function Start() {
+    console.log('Started...')
+    placeholder(true)
+}
+function placeholder(bool) {
+    if (bool) {
+        canvasPlaceholder.classList.remove('hidden');
+        canvas.classList.add('hidden');
+    }
+    if (bool === false) {
+        canvas.classList.remove('hidden');
+        canvasPlaceholder.classList.add('hidden');
+    }
+}
+/** Utilities */
+function createBackground(color) {
+    var c = color || getRandomRGB()
     ctx.fillRect(0,
         0,
         canvas.width,
         canvas.height,
-        getRandomRGB());
+        c);
 }
 function CanvasImageSrc() {
     var dataURI = canvas.toDataURL();
@@ -291,7 +484,7 @@ function CanvasImageSrc() {
     console.log(dataURI);
     return dataURI;
 }
-
+// Colors
 function getRandomHSL() {
     var h = h || GetRandomInt(360);
     var s = s || GetRandomInt(100);
@@ -308,52 +501,48 @@ function getRandomRGB() {
     var b = b || GetRandomInt(256);
     return 'rgb(' + r + ',' + g + ',' + b + ')';
 }
-
-function createCollection(count) {
-    for (i = 0; i < count; i++) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        createRowsDots(4)
-    }
+/** From:
+* https://stackoverflow.com/a/10215724
+*/
+fitToContainer(canvas);
+function fitToContainer(canvas) {
+    // Make it visually fill the positioned parent
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    // ...then set the internal size to match
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
 }
 
-function readCollection() {
-    for (i = 0; i < images.length; i++) {
-        console.log(images[i]);
-    }
-}
-
-/** Start-it-up */
-function Start() {
-    FormSelectOptions();
-    //createRandomSpread(100);
-    //createNewCollection(5);
-    //readCollection();
-}
-
-/** Utilities
-* From:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+/** From:
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 */
 function GetRandomInt(max) {
     var int = Math.floor(Math.random() * max);
     return int;
 }
-
 /** EVENTS */
+
+function touch(bool) {
+    if (bool) {
+        canvas.addEventListener('click', function(event) {
+            mouse.x = event.x;
+            mouse.y = event.y;
+            createCircle(mouse.x, mouse.y);
+        });
+    }
+}
+/*
 window.addEventListener('resize', function() {
     canvas.height = window.innerHeight;
     canvas.width = window.innerWidth;
 });
-/*
+
 canvas.addEventListener('resize', function() {
     canvas.height = canvas.height;
     canvas.width = canvas.width;
 });
 */
-canvas.addEventListener('click', function(event) {
-    mouse.x = event.x;
-    mouse.y = event.y;
-    createCircle(mouse.x, mouse.y);
-});
 canvas.addEventListener('mousemove', function(event) {
     mouse.x = event.x;
     mouse.y = event.y;

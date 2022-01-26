@@ -1,9 +1,10 @@
 {
-  "name": "dots",
-  "version": "0.0.1",
+  "name": "Dots",
+  "version": "0.0.2",
   "description": "Dots Art Project",
   "main": "app.js",
   "scripts": {
+      "css": "sass styles.scss stylesheet.css",
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
