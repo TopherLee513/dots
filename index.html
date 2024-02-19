@@ -1,105 +1,80 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
     <title>Dots</title>
     <meta name="description" content="Dots Project">
     <meta name="author" content="Christopher Lee">
-    <link rel="stylesheet" type="text/css" href="stylesheet.css">
-    <script defer src="dots.js"></script>
+    <link rel="icon" type="image/x-icon" href="./images/icon.png">
+    <link rel="stylesheet" type="text/css" href="./stylesheet.css">
+    <script defer type="text/javascript" src="./main.js"></script>
 </head>
-<body onload="Start()" class="light">
+<body id="body" class="dark">
     <header>
-        <a id="menu">
-            <div class="bi bi-list"></div>
+        <a id="themeButton" onclick="toggleTheme()">
+            <div id="themeButtonIcon" class="bi bi-sun-fill"></div>
         </a>
-        <h1>Dots</h1>
-        <h2><span class="small">By: </span><span class="bold">topher-lee</span><span class="small">.nft</span></h2>
+        <h1 id="title">Dots</h1>
+        <div id="spacer"></div>
+        <a id="author" href="https://topherlee513.github.io/"><span class="small">By: </span><span class="bold">topher-lee</span><span class="small">.nft</span></a>
     </header>
-    <div class="container">
-        <div class="container-header">
-            <div class="bi bi-form"></div>
-            Options
-        </div>
-        <form id="collectionForm">
-            <label for="collectionNameUI imageCountUI">Collection Name and Number of Images:</label>
-            <div class="form-row-2">
-                <input type="text" id="collectionNameUI" name="collectionNameUI" placeholder=" Collection Name">
-                <input type="number" id="imageCountUI" name="imageCountUI" placeholder=" Number of Images in Collection" value="1">
+    <main>
+        <form id="optionsForm" onsubmit="">
+            <label for="collectionNameUI">Collection Name</label>
+            <input type="text" name="collectionNameUI" id="collectionNameUI" value="Dots" onchange="setCollectionName()">
+            <label for="imageSizeXUI imageSizeYUI">Image Size</label>
+            <div class="dual">
+                <input type="number" name="imageSizeXUI" id="imageSizeXUI" step="100" value="500" onchange="setImageWidth()">
+                <input type="number" name="imageSizeYUI" id="imageSizeYUI" step="100" value="500" onchange="setImageHeight()">
             </div>
-            <div id="collectionMessage" class="form-message"></div>
-            
-            <label for="imageSizeXUI imageSizeYUI">Image Size: (256px - 4096px)²</label>
-            <div class="form-row">
-                <input type="number" id="imageSizeXUI" name="imageSizeXUI" placeholder=" Image Width (px)">
-                <input type="number" id="imageSizeYUI" name="imageSizeYUI" placeholder=" Image Height (px)">
-            </div>
-            <div id="imageSizeMessage" class="form-message"></div>
-            <div class="form-row-3">
-                <div class="colorPicker">
-                <label for="backgroundColorUI">Background: </label>
-                <input type="color" id="backgroundColorUI" name="backgroundColorUI">
-                </div>
-                <input type="number" id="particleCountUI" name="particleCountUI" placeholder=" Number of Particles">
-            
-            </div>
-            <div id="imageMessage" class="form-message"></div>
-            
-            <div class="form-row">
-                <select id="layoutSelectUI">
+            <label for="backgroundColorUI">Background</label>
+            <input type="color" id="backgroundColorUI" name="backgroundColorUI" onchange="setBGColor()">
+            <label for="backgroundColorUI">Particle Color Pallet</label>
+            <select id="palletSelectUI" onchange="setColorWheel()">
+                <optgroup label="Pallet">
+                    <option>RGB</option>
+                    <option>HSL</option>
+                    <option>Hue</option>
+                </optgroup>
+            </select>
+            <label for="palletSaturationUI">Saturation (Random Hue Only)</label>
+            <input type="range" id="palletSaturationUI" name="palletSaturationUI" onchange="setSaturation()">
+            <label for="palletLightnessUI">Lightness (Random Hue Only)</label>
+            <input type="range" id="palletLightnessUI" name="palletLightnessUI" onchange="setLightness()">
+            <label for="particleCountUI">Particle Count</label>
+            <input type="number" id="particleCountUI" name="particleCountUI" step="10" value="100" onchange="setParticleCount()">
+            <label for="layoutSelectUI particleSelectUI">Layout and Particles</label>
+            <div class="dual">
+                <select id="layoutSelectUI" onchange="setLayout()">
                     <optgroup label="Layout">
-                        <option>
-                            Random
-                        </option>
-                        <option>
-                            Rows
-                        </option>
+                        <option>Random</option>
+                        <option>Rows</option>
                     </optgroup>
                 </select>
-                <select id="particleSelectUI">
+                <select id="particleSelectUI" onchange="setParticles()">
                     <optgroup label="Particles">
-                        <option>
-                            Dots
-                        </option>
-                        <option>
-                            Blocks
-                        </option>
-                        <option>
-                            Both
-                        </option>
+                        <option>Blocks</option>
+                        <option>Dots</option>
+                        <option>Mixed</option>
                     </optgroup>
                 </select>
             </div>
-            <input type="button" id="submit" name="submit" value="Do the thing..." onclick="FormSubmit()">
+            <input type="button" id="create" name="create" value="Generate" onclick="onGenerateButtonPressed()">
+            <div id="messageBox"></div>
+            <a id="downloadButton">
+                <div class="icon bi bi-download"></div>
+                <div class="text">Download Image</div>
+            </a>
         </form>
-    </div>
-    <div class="container">
-        <div class="container-header">
-            <div class="bi bi-image"></div>
-            Canvas
+        <div id="canvasContainer">
+            <canvas id="canvas"></canvas>
         </div>
-        <div id="canvasPlaceholder" class="">
-            <div class="bi bi-plus-circle-dotted"></div>
-        </div>
-        <canvas id="canvas" class="hidden">
-
-        </canvas>
-    </div>
-    <div class="container">
-        <div class="container-header">
-            <div class="bi bi-list-columns-reverse"></div>
-            Image List
-        </div>
-        <ul id="imageList">
-
-        </ul>
-    </div>
+    </main>
     <footer>
-        <div class="copyright">
-            Copyright &copy; <span class="bold">2022</span> - <span class="bold txt-accent">topher-lee<span class="small">.nft</span></span>
+        <div id="copyright">
+            Copyright &copy; <span id="year" class="bold">2022</span> - <span class="bold txt-accent">topher-lee<span class="small">.nft</span></span>
         </div>
     </footer>
 </body>

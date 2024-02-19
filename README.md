@@ -24,42 +24,37 @@ Everything is setup to generate random options by default.
 But... the user has the option to choose some options like:
 
 - Collection Name
-  - (Really Only Affects the Download Button and File Name for now)
-
-- Number of Images in "Collection"
-  - (Minimum of 1)
+  - (Really Only Affects the File Name)
 
 - Image Width and Height
-  - (Minimum 256px & Maximum 4096px)
+  - Higher values may crash the program...
 
 - Background Color
 
 - Number of "Particles" per-Image
-  - (Only Applies to "Random" Layout right now)
 
 - Layout:
   - Random: Place particles all over the canvas, randomly
   - Rows: Align particles into rows and columns
+
 - Particles
   - Dots: Cirles
   - Blocks: Squares
-
+  - Both: Mixed
+  
 ## Examples
   
-| Random                        | Rows |
-| ----------------------------- | ---------------------------- |
-| Dots:                         | Dots:                        |
-| <img src="examples/random_dots.png"> | <img src="examples/row_dots.png"> |
-| Blocks:                              | Blocks:                           |
+| Random                                 | Rows                                |
+| -------------------------------------- | ----------------------------------- |
+| Dots:                                  | Dots:                               |
+| <img src="examples/random_dots.png">   | <img src="examples/row_dots.png">   |
+| Blocks:                                | Blocks:                             |
 | <img src="examples/random_blocks.png"> | <img src="examples/row_blocks.png"> |
-| Both:                                | Both:                             |
-| <img src="examples/random_both.png"> | <img src="examples/row_both.png"> |
+| Both:                                  | Both:                               |
+| <img src="examples/random_both.png">   | <img src="examples/row_both.png">   |
 
 
 ## About:
 
-Written on my phone using various text editors and IDE's.
-
-Proportions may suffer as a cause...
-
-Merge Requests relating to scaling/proportions are appreciated :).
+- Written on my phone using various text editors and IDE's.
+  - Updated on PC

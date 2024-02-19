@@ -1,343 +1,101 @@
 /* TopherLee
 */
-@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css");
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
 @import url("https://fonts.googleapis.com/css2?family=Roboto");
 @import url("https://fonts.googleapis.com/css2?family=Road+Rage");
 * {
+  box-sizing: border-box;
   font-size: 16px;
   margin: 0;
   padding: 0;
-  --pri-bg: #cccccc;
-  --sec-bg: #333333;
-  --pri-txt: #000000;
-  --sec-txt: #ffffff;
-  --accent: #990000;
 }
 
 .light {
-  --pri-bg: #cccccc;
-  --sec-bg: #333333;
-  --pri-txt: #000000;
-  --sec-txt: #ffffff;
+  --pri-bg: #ffffff;
+  --sec-bg: #bbbbbb;
+  --pri-txt: #333333;
+  --sec-txt: #000000;
   --accent: #990000;
 }
 
 .dark {
-  --pri-bg: #cccccc;
-  --sec-bg: #333333;
-  --pri-txt: #000000;
-  --sec-txt: #ffffff;
+  --pri-bg: #333333;
+  --sec-bg: #000000;
+  --pri-txt: #ffffff;
+  --sec-txt: #bbbbbb;
   --accent: #990000;
 }
 
-.bold {
-  font-weight: bold;
-}
-
-.small {
-  font-size: 0.75rem;
-}
-
-.txt-accent {
-  color: var(--accent);
-}
-
-.hidden {
-  display: none;
-}
-
 body {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  font-family: "Roboto";
-  background-color: var(--pri-bg);
-  background-image: url(./examples/dots.png);
-  color: var(--pri-txt);
-}
-
-button {
-  margin-bottom: 0.5rem;
-}
-
-input,
-select {
-  width: auto;
-  height: 2rem;
-  margin-bottom: 0.25rem;
+  background-image: url(./images/dots.png);
+  background-size: cover;
 }
 
 header {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
+  position: fixed;
+  z-index: 99;
   width: 100%;
   height: 2rem;
   background-color: var(--sec-bg);
-  color: var(--sec-txt);
   border-bottom: 2px solid var(--accent);
   margin-bottom: 0.5rem;
 }
-header #menu {
+header #themeButton {
   display: flex;
-  flex-grow: grow;
   justify-content: center;
   align-items: center;
   text-align: center;
-  height: 1.8rem;
-  width: 1.8rem;
+  height: 1.4rem;
+  width: 1.4rem;
+  margin: 0.3rem;
+  margin-left: 0.2rem;
   border: 1px solid var(--sec-txt);
+  border-radius: 4px;
   background-color: var(--sec-bg);
-  color: white;
+  color: var(--sec-txt);
 }
-header #menu .bi {
+header #themeButton .bi {
   height: 100%;
   width: 100%;
-  font-size: 1.8rem;
+  font-size: 1.2rem;
+  margin: 0.4rem;
 }
-header h1 {
+header :hover {
+  background-color: var(--pri-bg);
+  color: var(--pri-txt);
+}
+header #title {
   width: auto;
   height: auto;
   margin-left: 0.5rem;
+  margin-right: auto;
   text-align: center;
   font-size: 2rem;
   font-family: "Road Rage";
+  color: var(--pri-txt);
 }
-header h2 {
-  width: 50%;
+header #spacer {
+  width: auto;
+}
+header #author {
   height: auto;
+  margin-left: auto;
   margin-right: 0.5rem;
   text-align: right;
   font-size: 1.5rem;
-}
-
-.container {
-  z-index: 2;
-  min-height: 4rem;
-  width: auto;
-  margin: 0.5rem;
-  position: relative;
-  background-color: var(--pri-bg);
-  border: 2px solid black;
-  border-radius: 6px;
-  box-shadow: 0 0 5px 5px var(--accent);
-}
-.container .container-header {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-grow;
-  align-items: center;
-  height: 2rem;
-  width: auto;
-  border-bottom: 2px solid var(--accent);
-  background-color: var(--sec-bg);
-  color: var(--sec-txt);
-  border-radius: 4px 4px 0 0;
-  font-size: 1.5rem;
-  font-weight: bold;
-  text-align: center;
-  vertical-align: center;
-}
-.container .container-header div.bi {
-  font-size: 1.5rem;
-  width: 2rem;
-  height: 2rem;
-  margin-left: 0.25rem;
-}
-.container .container-header .container-header-text {
-  width: auto;
-}
-.container form {
-  width: auto;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin: 0.5rem;
-}
-.container form .form-row {
-  width: auto;
-  height: auto;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-grow;
-}
-.container form .form-row input, .container form .form-row select {
-  min-width: 48%;
-  width: auto;
-  max-width: 50%;
-  height: 2rem;
-  margin-bottom: 0.25rem;
-  margin-right: 0.25rem;
-}
-.container form .form-row:last-child {
-  margin-right: 0;
-}
-.container form .form-row-2 {
-  width: auto;
-  height: auto;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-.container form .form-row-2 input {
-  height: 2rem;
-  margin-bottom: 0.25rem;
-  margin-right: 0.25rem;
-}
-.container form .form-row-2 input:last-child {
-  margin-right: 0;
-}
-.container form .form-row-2 input[type=text] {
-  min-width: 70%;
-  width: auto;
-  max-width: 80%;
-  height: 2rem;
-  margin-bottom: 0.25rem;
-  margin-right: 0.25rem;
-}
-.container form .form-row-2 input[type=number] {
-  min-width: 20%;
-  width: auto;
-  max-width: 30%;
-}
-.container form .form-row-3 {
-  width: auto;
-  height: auto;
-  display: flex;
-  flex-direction: row;
-  flex-grow: grow;
-  justify-content: center;
-}
-.container form .form-row-3 label {
-  height: 2rem;
-  margin-bottom: 0.25rem;
-  margin-right: 0.25rem;
-}
-.container form .form-row-3 input {
-  height: 2rem;
-  margin-bottom: 0.25rem;
-  margin-right: 0.25rem;
-}
-.container form .form-row-3 input:last-child {
-  margin-right: 0;
-}
-.container form .form-row-3 .colorPicker {
-  min-width: 48%;
-  width: auto;
-  max-width: 50%;
-  height: 2rem;
-  display: flex;
-  flex-direction: row;
-  flex-grow: grow;
-  justify-content: center;
-  align-items: center;
-}
-.container form .form-row-3 .colorPicker label {
-  min-width: 48%;
-  width: auto;
-  max-width: 50%;
-  height: 2rem;
-  margin-bottom: 0.25rem;
-  margin-right: 0.25rem;
-}
-.container form .form-row-3 .colorPicker input[type=color] {
-  min-width: 48%;
-  width: auto;
-  max-width: 50%;
-  height: 2rem;
-  margin-bottom: 0.25rem;
-  margin-right: 0.25rem;
-}
-.container form .form-row-3 input[type=number] {
-  min-width: 48%;
-  width: auto;
-  max-width: 50%;
-  height: 2rem;
-  margin-bottom: 0.25rem;
-  margin-right: 0.25rem;
-}
-.container form .warning {
-  font-size: 0.7rem;
-  font-weight: bold;
-  color: red;
-}
-.container form > input, .container form > select {
-  width: auto;
-  height: 2rem;
-  margin-bottom: 0.25rem;
-}
-.container form > [type=submit], .container form > [type=button] {
-  width: auto;
-  height: 2rem;
-  margin-bottom: 0.25rem;
-  border: 1px solid black;
-  border-radius: 2rem;
-}
-.container #canvasPlaceholder {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: auto;
-  min-height: 5rem;
-  border: 2px dashed black;
-  border-radius: 4px;
-}
-.container #canvasPlaceholder .bi {
-  width: auto;
-  height: auto;
-  font-size: 4rem;
-  color: black;
-}
-.container #canvas {
-  z-index: 1;
-}
-.container #imageList {
-  height: auto;
-  width: auto;
-  display: flex;
-  flex-direction: column;
-  margin: 0.5rem;
-}
-.container #imageList li {
-  height: 2rem;
-  width: auto;
-  margin-bottom: 0.25rem;
-  list-style: none;
-  border: 1px solid var(--accent);
-  border-radius: 4px;
-  background-color: var(--pri-bg);
-  color: var(--pri-txt);
-  box-shadow: 0 0 5px 5px black;
-}
-.container #imageList li a {
-  width: 100%;
-  height: 100%;
   text-decoration: none;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-}
-.container #imageList li a img {
-  height: 1.8rem;
-  width: 1.8rem;
-  border: 1px solid white;
-}
-.container #imageList li a div {
-  width: auto;
-  height: 100%;
-  margin: 0;
-  font-size: 1.5rem;
-  text-align: center;
-  background-color: green;
+  font-family: "Roboto";
+  color: var(--sec-txt);
 }
 
 footer {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-around;
+  position: fixed;
+  z-index: 99;
   align-items: center;
   min-height: 2rem;
   width: 100%;
@@ -347,18 +105,259 @@ footer {
   border-top: 2px solid var(--accent);
   bottom: 0;
 }
-footer .copyright {
-  min-height: 2rem;
+footer #copyright {
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
   width: 100%;
   text-align: center;
 }
-footer .copyright span {
+footer #copyright span {
   font-weight: bold;
   color: var(--accent);
 }
 
+.col {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.spacer {
+  display: flex;
+  flex-grow: 1;
+  width: auto;
+  height: auto;
+}
+
+#messageBox {
+  width: auto;
+  height: 2rem;
+  background-color: var(--pri-bg);
+  color: var(--pri-txt);
+}
+
 .hidden {
   display: none;
+}
+
+/* large screen width */
+@media screen and (min-width: 801px) {
+  body {
+    justify-content: space-around;
+    font-family: "Roboto";
+    background-image: url(./images/dots.png);
+    background-size: cover;
+    background-color: var(--pri-bg);
+    color: var(--pri-txt);
+  }
+  body main {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: auto;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+  body main form {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: auto;
+    height: auto;
+    padding: 0.5rem;
+    margin: 0.5rem;
+    background-color: var(--pri-bg);
+    border: 2px solid var(--pri-txt);
+    border-radius: 6px;
+    box-shadow: 0 0 5px 5px var(--accent);
+  }
+  body main form label {
+    width: auto;
+    height: 1.6rem;
+    font-size: 1rem;
+    padding: 0.3rem;
+  }
+  body main form input, body main form select, body main form a {
+    box-sizing: border-box;
+    width: auto;
+    height: 2rem;
+    border-radius: 6px;
+    background-color: var(--sec-bg);
+    color: var(--sec-txt);
+    border: 1px solid var(--sec-txt);
+    text-align: center;
+  }
+  body main form input:hover, body main form select:hover, body main form a:hover {
+    background-color: var(--pri-bg);
+    color: var(--pri-txt);
+    border: 1px solid var(--pri-txt);
+    font-weight: bold;
+  }
+  body main form .dual {
+    display: flex;
+    flex-direction: row;
+    width: auto;
+    height: 2rem;
+  }
+  body main form .dual input, body main form .dual select {
+    display: flex;
+    flex-grow: 1;
+    width: auto;
+    height: auto;
+  }
+  body main form #create {
+    margin-top: 1rem;
+    cursor: pointer;
+  }
+  body main form #downloadButton {
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    width: auto;
+    height: 2rem;
+    margin-top: 1rem;
+    cursor: pointer;
+  }
+  body main form #downloadButton .icon {
+    width: 1.6rem;
+    height: 1.6rem;
+    margin: 0.3rem;
+  }
+  body main form #downloadButton .text {
+    width: auto;
+    height: 1.6rem;
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
+    text-align: center;
+  }
+  body main #canvasContainer {
+    display: flex;
+    flex-grow: 3;
+    width: auto;
+    height: auto;
+    margin: 0.5rem;
+    background-color: var(--pri-bg);
+    border: 2px solid var(--pri-txt);
+    border-radius: 6px;
+    box-shadow: 0 0 5px 5px var(--accent);
+  }
+  body main #canvasContainer canvas {
+    width: auto;
+    height: auto;
+    margin: 0.5rem;
+  }
+}
+/* small screen width */
+@media screen and (max-width: 800px) {
+  body {
+    justify-content: space-around;
+    font-family: "Roboto";
+    background-image: url(./images/dots.png);
+    background-size: cover;
+    background-color: var(--pri-bg);
+    color: var(--pri-txt);
+  }
+  body main {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+  body main form {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: auto;
+    height: auto;
+    margin: 0.5rem;
+    background-color: var(--pri-bg);
+    border: 2px solid var(--pri-txt);
+    border-radius: 6px;
+    box-shadow: 0 0 5px 5px var(--accent);
+  }
+  body main form label {
+    width: auto;
+    height: 1.6rem;
+    font-size: 1rem;
+    padding: 0.3rem;
+  }
+  body main form input, body main form select, body main form a {
+    box-sizing: border-box;
+    width: auto;
+    height: 2rem;
+    border-radius: 6px;
+    background-color: var(--sec-bg);
+    color: var(--sec-txt);
+    border: 1px solid var(--sec-txt);
+    text-align: center;
+  }
+  body main form input:hover, body main form select:hover, body main form a:hover {
+    background-color: var(--pri-bg);
+    color: var(--pri-txt);
+    border: 1px solid var(--pri-txt);
+    font-weight: bold;
+  }
+  body main form .dual {
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    height: 4rem;
+  }
+  body main form .dual input, body main form .dual select {
+    display: flex;
+    flex-grow: 1;
+    width: auto;
+    height: 2rem;
+  }
+  body main form #create {
+    margin-top: 1rem;
+  }
+  body main form #downloadButton {
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    width: auto;
+    height: 2rem;
+    margin-top: 1rem;
+  }
+  body main form #downloadButton .icon {
+    width: 1.6rem;
+    height: 1.6rem;
+    margin: 0.3rem;
+  }
+  body main form #downloadButton .text {
+    width: auto;
+    height: 1.6rem;
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
+    text-align: center;
+  }
+  body main #canvasContainer {
+    display: flex;
+    flex-grow: 3;
+    min-width: 75%;
+    width: auto;
+    height: auto;
+    margin: 0.5rem;
+    background-color: var(--pri-bg);
+    border: 2px solid var(--pri-txt);
+    border-radius: 6px;
+    box-shadow: 0 0 5px 5px var(--accent);
+  }
+  body main #canvasContainer canvas {
+    width: auto;
+    height: auto;
+    margin: 0.5rem;
+  }
 }
 
 /*# sourceMappingURL=stylesheet.css.map */

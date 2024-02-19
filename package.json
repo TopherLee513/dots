@@ -1,13 +1,24 @@
 {
-  "name": "Dots",
-  "version": "0.0.2",
+  "name": "dots",
+  "version": "0.0.3",
   "description": "Dots Art Project",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-      "css": "sass styles.scss stylesheet.css",
-    "start": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run sass && npm run tsc && npm run test",
+    "sass": "sass ./stylesheet.scss ./stylesheet.css",
+    "sassc": "sass --style=compressed ./stylesheet.scss ./stylesheet.min.css",
+    "sassw": "sass --watch ./stylesheet.scss ./stylesheet.css",
+    "tsc": "tsc",
+    "tscw": "tsc --watch",
+    "start": "node ./server.js",
+    "test": "nodemon ./server.js"
   },
   "author": "topher-lee.nft",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.11.19",
+    "express": "^4.18.2",
+    "nodemon": "^3.0.3",
+    "sass": "^1.70.0"
+  }
 }
